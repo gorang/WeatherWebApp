@@ -1,0 +1,47 @@
+# =========================
+# Secrets / local config
+# =========================
+**/.env
+**/.env.*
+!**/.env.example
+
+**/appsettings.Development.json
+**/appsettings.*.Development.json
+**/appsettings.Local.json
+**/secrets.json
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+.vite/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# =========================
+# .NET / Visual Studio
+# =========================
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+TestResults/
+*.pdb
+*.cache
+*.ilk
+
+# =========================
+# OS stuff
+# =========================
+Thumbs.db
+Desktop.ini
