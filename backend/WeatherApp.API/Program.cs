@@ -57,6 +57,8 @@ namespace WeatherApp.API
                 throw new InvalidOperationException("JWT key is missing. Set Jwt:Key in appsettings.Development.json");
             }
 
+            var jwtSigningKey = jwtKey!;    // Nullable jwtKey is safe to use at this point
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -68,7 +70,7 @@ namespace WeatherApp.API
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSigningKey))
                     };
                 });
 
