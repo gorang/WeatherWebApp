@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-
-namespace WeatherApp.API.Services
+﻿namespace WeatherApp.API.Services
 {
     public class OpenWeatherService
     {
