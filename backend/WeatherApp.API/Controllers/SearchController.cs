@@ -60,7 +60,7 @@ namespace WeatherApp.API.Controllers
         {
             var userId = GetUserId();
 
-            var topCitiesTask = _db.WeatherSearches
+            var topCities = await _db.WeatherSearches
                 .AsNoTracking()
                 .Where(s => s.UserId == userId)
                 .GroupBy(s => s.City)
@@ -74,7 +74,7 @@ namespace WeatherApp.API.Controllers
                 .Take(3)
                 .ToListAsync();
 
-            var latestSearchesTask = _db.WeatherSearches
+            var latestSearches = await _db.WeatherSearches
                 .AsNoTracking()
                 .Where(s => s.UserId == userId)
                 .OrderByDescending(s => s.SearchedAtUtc)
@@ -88,7 +88,7 @@ namespace WeatherApp.API.Controllers
                 })
                 .ToListAsync();
 
-            var distributionTask = _db.WeatherSearches
+            var distribution = await _db.WeatherSearches
                 .AsNoTracking()
                 .Where(s => s.UserId == userId)
                 .GroupBy(s => s.ConditionMain)
@@ -101,16 +101,12 @@ namespace WeatherApp.API.Controllers
                 .ThenBy(x => x.ConditionMain)
                 .ToListAsync();
 
-            await Task.WhenAll(topCitiesTask, latestSearchesTask, distributionTask);
-
-            var dto = new SearchStatisticsDto
+            return Ok(new SearchStatisticsDto
             {
-                TopCities = topCitiesTask.Result,
-                LatestSearches = latestSearchesTask.Result,
-                ConditionDistribution = distributionTask.Result
-            };
-
-            return Ok(dto);
+                TopCities = topCities,
+                LatestSearches = latestSearches,
+                ConditionDistribution = distribution
+            });
         }
     }
 }
