@@ -84,6 +84,9 @@ namespace WeatherApp.API
                           .AllowAnyMethod());
             });
 
+            builder.Services.AddHttpClient<OpenWeatherService>();
+            builder.Services.AddScoped<OpenWeatherService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

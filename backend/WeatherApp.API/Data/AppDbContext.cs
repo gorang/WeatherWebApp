@@ -16,7 +16,12 @@ namespace WeatherApp.API.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+            modelBuilder.Entity<WeatherSearch>()
+                .HasIndex(s => new { s.UserId, s.SearchedAtUtc });
         }
+
+        public DbSet<WeatherSearch> WeatherSearches => Set<WeatherSearch>();
 
         // We'll add DbSet<User>, DbSet<WeatherSearch> here soon
         // public DbSet<User> Users => Set<User>();
