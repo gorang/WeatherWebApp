@@ -48,10 +48,11 @@ namespace WeatherApp.API
                 });
             });
 
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<AppDbContext>(options => 
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var jwtKey = builder.Configuration["Jwt:Key"];
-            if (string.IsNullOrWhiteSpace(jwtKey))
+            if (builder.Environment.IsDevelopment() && string.IsNullOrWhiteSpace(jwtKey))
             {
                 throw new InvalidOperationException("JWT key is missing. Set Jwt:Key in appsettings.Development.json");
             }
@@ -73,6 +74,14 @@ namespace WeatherApp.API
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Frontend", policy =>
+                    policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -86,6 +95,8 @@ namespace WeatherApp.API
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
+            app.UseCors("Frontend");
 
             app.MapControllers();
 
