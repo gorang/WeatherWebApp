@@ -42,7 +42,7 @@ namespace WeatherApp.API.Controllers
             if (string.IsNullOrWhiteSpace(normalizedCity))
                 return BadRequest("City is required.");
 
-            var forecast = await _ow.GetForecast5DaysByCityAsync(city);
+            var forecast = await _ow.GetForecast5DaysByCityAsync(normalizedCity);
 
             var points = forecast.Points.AsQueryable();
             if (fromUtc.HasValue) points = points.Where(p => p.DateTimeUtc >= fromUtc.Value);
@@ -60,7 +60,7 @@ namespace WeatherApp.API.Controllers
                 _db.WeatherSearches.Add(new WeatherSearch
                 {
                     UserId = userId,
-                    City = CityNormalizer.Normalize(forecast.City),
+                    City = normalizedCity,
                     SearchedAtUtc = DateTime.UtcNow,
                     ConditionMain = first.ConditionMain,
                     ConditionDescription = first.ConditionDescription,
@@ -71,7 +71,7 @@ namespace WeatherApp.API.Controllers
 
             return Ok(new
             {
-                City = CityNormalizer.Normalize(forecast.City),
+                City = normalizedCity,
                 Points = filtered
             });
         }
