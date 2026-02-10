@@ -4,6 +4,7 @@ using System.Security.Claims;
 using WeatherApp.API.Data;
 using WeatherApp.API.Models;
 using WeatherApp.API.Services;
+using WeatherApp.API.Utils;
 
 namespace WeatherApp.API.Controllers
 {
@@ -30,14 +31,15 @@ namespace WeatherApp.API.Controllers
         }
 
         // 5-day forecast by city
-        // Optional filter: fromUtc/toUtc for "time period" filtering (affects grid+chart later)
+        // Optional filter: fromUtc/toUtc for "time period" filtering (affects grid+chart)
         [HttpGet("forecast")]
         public async Task<ActionResult> GetForecast(
             [FromQuery] string city,
             [FromQuery] DateTime? fromUtc,
             [FromQuery] DateTime? toUtc)
         {
-            if (string.IsNullOrWhiteSpace(city))
+            var normalizedCity = CityNormalizer.Normalize(city);
+            if (string.IsNullOrWhiteSpace(normalizedCity))
                 return BadRequest("City is required.");
 
             var forecast = await _ow.GetForecast5DaysByCityAsync(city);
@@ -51,14 +53,14 @@ namespace WeatherApp.API.Controllers
             // Save the search (requirement: every user search stored in DB)
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            // Use "current-ish" conditions from the first forecast point to store something meaningful
+            // Use "current" conditions from the first forecast point to store something meaningful
             var first = filtered.FirstOrDefault() ?? forecast.Points.FirstOrDefault();
             if (first != null)
             {
                 _db.WeatherSearches.Add(new WeatherSearch
                 {
                     UserId = userId,
-                    City = forecast.City,
+                    City = CityNormalizer.Normalize(forecast.City),
                     SearchedAtUtc = DateTime.UtcNow,
                     ConditionMain = first.ConditionMain,
                     ConditionDescription = first.ConditionDescription,
@@ -69,7 +71,7 @@ namespace WeatherApp.API.Controllers
 
             return Ok(new
             {
-                City = forecast.City,
+                City = CityNormalizer.Normalize(forecast.City),
                 Points = filtered
             });
         }
