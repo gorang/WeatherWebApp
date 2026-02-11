@@ -15,7 +15,7 @@ Technologies used:
 * Node.js LTS (18+ or 20+ recommended)  
 * Web browser (tested with Mozilla Firefox and Microsoft Edge)  
 
-## Developer tools  
+## Developer Tools  
 
 * Microsoft Visual Studio Community 2022 (for backend and frontend) with  
   - "ASP.NET and web development" workload  
@@ -28,9 +28,9 @@ Technologies used:
   * chart.js  
   * react-chartjs-2  
 
-## Build Environment setup  
+## Build & Environment Setup  
 
-1. Database  
+1. **Database**  
     - Use pgAdmin to create a role and database in the local PostgreSQL instance:  
 
         CREATE USER weatherapp_user WITH PASSWORD 'weatherapp_pwd';  
@@ -38,7 +38,7 @@ Technologies used:
 
       (Replace weatherapp_user, weatherapp_pwd and weatherapp as needed).  
 
-2. Backend  
+2. **Backend**  
     - Copy 'appsettings.Development.example.json' to 'appsettings.Development.json'  
     - In 'appsettings.Development.json', replace the placeholder values ("TODO_..."):  
     - "ConnectionStrings": database name, user name and password  
@@ -49,24 +49,22 @@ Technologies used:
         cd backend/WeatherApp.API  
         dotnet ef database update  
 
-3. Frontend  
+3. **Frontend**  
     - install dependencies:  
 
       cd frontend/weather-app-ui  
       npm install  
 
-  - Copy '.env.example' to '.env'  
-  - Set the backend API base URL: "VITE_API_BASE_URL=https://localhost:7093"  
-    (use the URL shown in Swagger or in 'launchSettings.json')  
+    - Copy '.env.example' to '.env'  
+    - Set the backend API base URL: "VITE_API_BASE_URL=https://localhost:7093"  
+      (use the URL shown in Swagger or in 'launchSettings.json')  
 
+## Running and Testing  
 
-## Running and testing  
-
-1. Backend: compile and run from Visual Studio  
-2. Frontend:  
+1. **Backend:** compile and run from Visual Studio  
+2. **Frontend:**  
       cd frontend/weather-app-ui  
-      npm run dev ("frontend\weather-app-ui") with  
-      npm run dev (HELP_PLEASE - is this correct and all that is needed?)  
+      npm run dev  
 
 ## Application Access  
 
@@ -79,5 +77,5 @@ Technologies used:
 ## Notes  
 
 - The frontend development server runs on port 5173 (Vite default).  
-- The backend runs on the port defined in 'launchSettings.json' (default: **7093**).  
+- The backend runs on the port defined in 'launchSettings.json' (default: 7093).  
 - The frontend communicates with the backend using the URL configured in '.env'.  
