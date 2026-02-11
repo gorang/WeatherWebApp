@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api } from "../api/client";
 import type { SearchStatistics } from "../types/stats";
+import { formatLocal } from "../utils/time";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -87,7 +88,7 @@ export default function StatsPage() {
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr>
-                    <th style={th}>Time (UTC)</th>
+                    <th style={th}>Time</th>
                     <th style={th}>City</th>
                     <th style={th}>Temp (°C)</th>
                     <th style={th}>Condition</th>
@@ -96,9 +97,7 @@ export default function StatsPage() {
                 <tbody>
                   {data.latestSearches.map((s, idx) => (
                     <tr key={`${s.city}-${s.searchedAtUtc}-${idx}`}>
-                      <td style={td}>
-                        {new Date(s.searchedAtUtc).toISOString().replace("T", " ").slice(0, 16)}
-                      </td>
+                      <td style={td}>{formatLocal(s.searchedAtUtc)}</td>
                       <td style={td}>{s.city}</td>
                       <td style={td}>{Math.round(s.tempC)}</td>
                       <td style={td}>{s.conditionMain}</td>

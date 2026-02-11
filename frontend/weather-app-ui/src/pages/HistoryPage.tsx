@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { SearchHistoryItem } from "../types/stats";
+import { formatLocal } from "../utils/time";
 
 export default function HistoryPage() {
   const [items, setItems] = useState<SearchHistoryItem[]>([]);
@@ -43,7 +44,7 @@ export default function HistoryPage() {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={th}>Time (UTC)</th>
+              <th style={th}>Time</th>
               <th style={th}>City</th>
               <th style={th}>Temp (°C)</th>
               <th style={th}>Condition</th>
@@ -53,9 +54,7 @@ export default function HistoryPage() {
           <tbody>
             {items.map((s) => (
               <tr key={s.id}>
-                <td style={td}>
-                  {new Date(s.searchedAtUtc).toISOString().replace("T", " ").slice(0, 16)}
-                </td>
+                <td style={td}>{formatLocal(s.searchedAtUtc)}</td>
                 <td style={td}>{s.city}</td>
                 <td style={td}>{Math.round(s.tempC)}</td>
                 <td style={td}>{s.conditionMain}</td>
