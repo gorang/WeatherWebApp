@@ -18,7 +18,11 @@ export default function CurrentWeatherWidget() {
           setErr(null);
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-          const res = await api.get<CurrentWeather>(`/weather/current`, { params: { lat, lon } });
+
+          const res = await api.get<CurrentWeather>("/weather/current", {
+            params: { lat, lon },
+          });
+
           setData(res.data);
         } catch {
           setErr("Failed to load current weather.");
@@ -29,17 +33,32 @@ export default function CurrentWeatherWidget() {
   }, []);
 
   return (
-    <div style={{ minWidth: 260, padding: 8, border: "1px solid #ddd", borderRadius: 8 }}>
-      <div style={{ fontWeight: 600 }}>Current</div>
+    <div style={cardStyle}>
+      <div style={{ fontWeight: 700, marginBottom: 6 }}>Current weather</div>
+
       {err && <div style={{ color: "crimson" }}>{err}</div>}
       {!err && !data && <div>Loading…</div>}
+
       {data && (
-        <div>
-          <div>{data.city}</div>
-          <div>{Math.round(data.tempC)}°C</div>
-          <div>{data.conditionMain} ({data.conditionDescription})</div>
+        <div style={{ display: "grid", gap: 2 }}>
+          <div style={{ fontWeight: 600 }}>{data.city}</div>
+          <div style={{ fontSize: 20 }}>{Math.round(data.tempC)}°C</div>
+          <div style={{ color: "#444" }}>
+            {data.conditionMain} ({data.conditionDescription})
+          </div>
         </div>
       )}
     </div>
   );
 }
+
+const cardStyle: React.CSSProperties = {
+  minWidth: 280,
+  maxWidth: 420,
+  width: "fit-content",
+  padding: 12,
+  border: "1px solid #ddd",
+  borderRadius: 8,
+  backgroundColor: "#fafafa",
+  textAlign: "center",
+};
