@@ -49,7 +49,13 @@ export default function ForecastPage() {
     <div style={{ display: "grid", gap: 16 }}>
       <h2>Forecast</h2>
 
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "end" }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          search();
+        }}
+        style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "end" }}
+      >
         <label>
           City
           <input
@@ -73,10 +79,10 @@ export default function ForecastPage() {
           </select>
         </label>
 
-        <button onClick={search} disabled={busy} style={{ padding: "10px 14px" }}>
+        <button type="submit" disabled={busy} style={{ padding: "10px 14px" }}>
           {busy ? "Searching..." : "Search"}
         </button>
-      </div>
+      </form>
 
       {err && <div style={{ color: "crimson" }}>{err}</div>}
 
