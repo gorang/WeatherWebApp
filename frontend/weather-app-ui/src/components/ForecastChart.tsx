@@ -10,15 +10,14 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { ForecastPoint } from "../types/weather";
+import { formatLocal } from "../utils/time";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, TimeScale);
 
 export default function ForecastChart({ points }: { points: ForecastPoint[] }) {
   if (points.length === 0) return <div>No chart data for selected filters.</div>;
 
-  const labels = points.map((p) =>
-    new Date(p.dateTimeUtc).toISOString().replace("T", " ").slice(5, 16)
-  );
+  const labels = points.map((p) =>formatLocal(p.dateTimeUtc));
   const temps = points.map((p) => p.tempC);
 
   const data = {
