@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { CurrentWeather } from "../types/weather";
+import { isLoggedIn } from "../auth/auth";
 
 export default function CurrentWeatherWidget() {
   const [data, setData] = useState<CurrentWeather | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isLoggedIn()) {
+      setErr("Login to see current weather.");
+      setData(null);
+      return;
+    }
+
     if (!navigator.geolocation) {
       setErr("Geolocation not supported.");
       return;
@@ -24,7 +31,7 @@ export default function CurrentWeatherWidget() {
           });
 
           setData(res.data);
-        } catch {
+        } catch (e) {
           setErr("Failed to load current weather.");
         }
       },
@@ -36,7 +43,7 @@ export default function CurrentWeatherWidget() {
     <div style={cardStyle}>
       <div style={{ fontWeight: 700, marginBottom: 6 }}>Current weather</div>
 
-      {err && <div style={{ color: "crimson" }}>{err}</div>}
+      {err && <div style={{ color: err.includes("Failed") ? "crimson" : "#444" }}>{err}</div>}
       {!err && !data && <div>Loading…</div>}
 
       {data && (
