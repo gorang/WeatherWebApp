@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// TODO: Only for test purposes. Remove this controller when not needed any more.
+// Only for test purposes. TODO: remove this controller when not needed any more.
 namespace WeatherApp.API.Controllers
 {
     [ApiController]

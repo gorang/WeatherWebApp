@@ -10,7 +10,7 @@ namespace WeatherApp.API.Controllers
 {
     [ApiController]
     [Route("weather")]
-    [Authorize] // all weather endpoints require login
+    [Authorize] // All weather endpoints require login
     public class WeatherController : ControllerBase
     {
         private readonly OpenWeatherService _ow;
@@ -30,8 +30,7 @@ namespace WeatherApp.API.Controllers
             return Ok(result);
         }
 
-        // 5-day forecast by city
-        // Optional filter: fromUtc/toUtc for "time period" filtering (affects grid+chart)
+        // 5-day forecast by city with optional filter: fromUtc/toUtc for "time period" filtering (affects grid+chart)
         [HttpGet("forecast")]
         public async Task<ActionResult> GetForecast(
             [FromQuery] string city,
@@ -50,10 +49,10 @@ namespace WeatherApp.API.Controllers
 
             var filtered = points.ToList();
 
-            // Save the search (requirement: every user search stored in DB)
+            // Save the search (every user search should be stored in DB)
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            // Use "current" conditions from the first forecast point to store something meaningful
+            // Use current weather conditions from the first forecast point to store the search data
             var first = filtered.FirstOrDefault() ?? forecast.Points.FirstOrDefault();
             if (first != null)
             {

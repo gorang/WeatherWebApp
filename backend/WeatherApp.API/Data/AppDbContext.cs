@@ -22,9 +22,5 @@ namespace WeatherApp.API.Data
         }
 
         public DbSet<WeatherSearch> WeatherSearches => Set<WeatherSearch>();
-
-        // We'll add DbSet<User>, DbSet<WeatherSearch> here soon
-        // public DbSet<User> Users => Set<User>();
-        // public DbSet<WeatherSearch> WeatherSearches => Set<WeatherSearch>();
     }
 }

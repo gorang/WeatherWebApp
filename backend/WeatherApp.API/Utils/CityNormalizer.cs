@@ -2,8 +2,7 @@
 
 namespace WeatherApp.API.Utils
 {
-    // Normalizes city names in a consistent way when calling OpenWeather and saving to DB.
-    // City names will be trimmed, multiple spaces collapsed and then normalized converted using Title Case
+    // Normalizes city names in a consistent way when calling OpenWeather and saving to DB
     // (e.g. "new york" -> "New York", "ZAGREB" -> "Zagreb" etc.)
     public static class CityNormalizer
     {
