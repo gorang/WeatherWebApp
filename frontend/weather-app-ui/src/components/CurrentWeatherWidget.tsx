@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { CurrentWeather } from "../types/weather";
-import { isLoggedIn } from "../auth/auth";
+//import { isLoggedIn } from "../auth/auth";
 
 export default function CurrentWeatherWidget() {
   const [data, setData] = useState<CurrentWeather | null>(null);
