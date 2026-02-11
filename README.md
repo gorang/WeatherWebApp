@@ -31,12 +31,9 @@ Technologies used:
 ## Build & Environment Setup  
 
 1. **Database**  
-    - Use pgAdmin to create a role and database in the local PostgreSQL instance:  
-
-        CREATE USER weatherapp_user WITH PASSWORD 'weatherapp_pwd';  
-        CREATE DATABASE weatherapp OWNER weatherapp_user;  
-
-      (Replace weatherapp_user, weatherapp_pwd and weatherapp as needed).  
+    - Use pgAdmin to create a role and database in the local PostgreSQL instance (replace weatherapp_user, weatherapp_pwd and weatherapp as needed):  
+      >CREATE USER weatherapp_user WITH PASSWORD 'weatherapp_pwd';  
+      >CREATE DATABASE weatherapp OWNER weatherapp_user;  
 
 2. **Backend**  
     - Copy 'appsettings.Development.example.json' to 'appsettings.Development.json'  
@@ -45,16 +42,13 @@ Technologies used:
     - "Jwt": generate your own unique JWT key  
     - "OpenWeather": create an API key at <https://openweathermap.org/>  
     - Apply database migrations:  
-
-        cd backend/WeatherApp.API  
-        dotnet ef database update  
+      >cd backend/WeatherApp.API  
+      >dotnet ef database update  
 
 3. **Frontend**  
     - install dependencies:  
-
-      cd frontend/weather-app-ui  
-      npm install  
-
+      >cd frontend/weather-app-ui  
+      >npm install  
     - Copy '.env.example' to '.env'  
     - Set the backend API base URL: "VITE_API_BASE_URL=https://localhost:7093"  
       (use the URL shown in Swagger or in 'launchSettings.json')  
@@ -62,9 +56,10 @@ Technologies used:
 ## Running and Testing  
 
 1. **Backend:** compile and run from Visual Studio  
+
 2. **Frontend:**  
-      cd frontend/weather-app-ui  
-      npm run dev  
+    >cd frontend/weather-app-ui  
+    >npm run dev  
 
 ## Application Access  
 
