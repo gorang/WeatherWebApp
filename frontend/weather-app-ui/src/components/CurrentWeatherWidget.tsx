@@ -8,11 +8,13 @@ export default function CurrentWeatherWidget() {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
+    /* TODO: Re-enable login check if the backend requires authentication for this endpoint.
     if (!isLoggedIn()) {
       setErr("Login to see current weather.");
       setData(null);
       return;
     }
+    */
 
     if (!navigator.geolocation) {
       setErr("Geolocation not supported.");
