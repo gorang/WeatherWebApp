@@ -10,7 +10,7 @@ namespace WeatherApp.API.Controllers
 {
     [ApiController]
     [Route("weather")]
-    [Authorize] // All weather endpoints require login
+    [Authorize] // All weather endpoints require login by default
     public class WeatherController : ControllerBase
     {
         private readonly OpenWeatherService _ow;
@@ -24,8 +24,12 @@ namespace WeatherApp.API.Controllers
 
         // Current weather by user location (lat/lon comes from browser geolocation)
         [HttpGet("current")]
+        [AllowAnonymous] // Override [Authorize] on the controller in order to allow usage even when no user is logged in
         public async Task<ActionResult> GetCurrent([FromQuery] double lat, [FromQuery] double lon)
         {
+            if (lat < -90 || lat > 90 || lon < -180 || lon > 180)
+                return BadRequest("Invalid coordinates.");
+
             var result = await _ow.GetCurrentByLatLonAsync(lat, lon);
             return Ok(result);
         }
