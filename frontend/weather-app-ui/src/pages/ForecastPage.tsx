@@ -51,7 +51,7 @@ export default function ForecastPage() {
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "end" }}>
         <label>
-          City (filter #1)
+          City
           <input
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -61,7 +61,7 @@ export default function ForecastPage() {
         </label>
 
         <label>
-          Time period (filter #2)
+          Time period
           <select
             value={rangeDays}
             onChange={(e) => setRangeDays(e.target.value as RangeOption)}
