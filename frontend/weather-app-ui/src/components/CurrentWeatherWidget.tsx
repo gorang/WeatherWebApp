@@ -53,6 +53,7 @@ export default function CurrentWeatherWidget() {
 }
 
 const cardStyle: React.CSSProperties = {
+  minHeight: 120,
   minWidth: 280,
   maxWidth: 420,
   width: "fit-content",
