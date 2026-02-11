@@ -5,7 +5,7 @@ export default function ForecastGrid({ points }: { points: ForecastPoint[] }) {
   if (points.length === 0) return <div>No data for selected filters.</div>;
 
   return (
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse",  }}>
       <thead>
         <tr>
           <th style={th}>Time</th>
@@ -16,7 +16,7 @@ export default function ForecastGrid({ points }: { points: ForecastPoint[] }) {
       </thead>
       <tbody>
         {points.map((p) => (
-          <tr key={p.dateTimeUtc}>
+          <tr key={p.dateTimeUtc} style={td}>
             <td>{formatLocal(p.dateTimeUtc)}</td>
             <td style={td}>{Math.round(p.tempC)}</td>
             <td style={td}>{p.conditionMain}</td>

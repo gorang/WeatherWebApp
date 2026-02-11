@@ -12,7 +12,8 @@ export default function App() {
   const nav = useNavigate();
 
   return (
-    <div style={{ padding: 16, fontFamily: "system-ui, sans-serif" }}>
+    <div style={{ padding: 16, fontFamily: "system-ui, sans-serif", 
+      width: "100%", boxSizing: "border-box", }}>
       <header style={headerStyle}>
         {/* Always-visible widget (centered) */}
         <div style={widgetContainerStyle}>

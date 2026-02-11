@@ -113,7 +113,7 @@ export default function StatsPage() {
             {data.conditionDistribution.length === 0 ? (
               <div>No searches yet.</div>
             ) : (
-              <div style={{ maxWidth: 520 }}>
+              <div style={{ width: "100%", maxWidth: 600 }}>
                 <Pie data={pieData} />
               </div>
             )}
