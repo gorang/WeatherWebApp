@@ -45,38 +45,45 @@ namespace WeatherApp.API.Controllers
             if (string.IsNullOrWhiteSpace(normalizedCity))
                 return BadRequest("City is required.");
 
-            var forecast = await _ow.GetForecast5DaysByCityAsync(normalizedCity);
-
-            var points = forecast.Points.AsQueryable();
-            if (fromUtc.HasValue) points = points.Where(p => p.DateTimeUtc >= fromUtc.Value);
-            if (toUtc.HasValue) points = points.Where(p => p.DateTimeUtc <= toUtc.Value);
-
-            var filtered = points.ToList();
-
-            // Save the search (every user search should be stored in DB)
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-            // Use current weather conditions from the first forecast point to store the search data
-            var first = filtered.FirstOrDefault() ?? forecast.Points.FirstOrDefault();
-            if (first != null)
+            try
             {
-                _db.WeatherSearches.Add(new WeatherSearch
+                var forecast = await _ow.GetForecast5DaysByCityAsync(normalizedCity);
+
+                var points = forecast.Points.AsQueryable();
+                if (fromUtc.HasValue) points = points.Where(p => p.DateTimeUtc >= fromUtc.Value);
+                if (toUtc.HasValue) points = points.Where(p => p.DateTimeUtc <= toUtc.Value);
+
+                var filtered = points.ToList();
+
+                // Save the search (every user search should be stored in DB)
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+                // Use current weather conditions from the first forecast point to store the search data
+                var first = filtered.FirstOrDefault() ?? forecast.Points.FirstOrDefault();
+                if (first != null)
                 {
-                    UserId = userId,
-                    City = normalizedCity,
-                    SearchedAtUtc = DateTime.UtcNow,
-                    ConditionMain = first.ConditionMain,
-                    ConditionDescription = first.ConditionDescription,
-                    TempC = first.TempC
-                });
-                await _db.SaveChangesAsync();
-            }
+                    _db.WeatherSearches.Add(new WeatherSearch
+                    {
+                        UserId = userId,
+                        City = normalizedCity,
+                        SearchedAtUtc = DateTime.UtcNow,
+                        ConditionMain = first.ConditionMain,
+                        ConditionDescription = first.ConditionDescription,
+                        TempC = first.TempC
+                    });
+                    await _db.SaveChangesAsync();
+                }
 
-            return Ok(new
+                return Ok(new
+                {
+                    City = normalizedCity,
+                    Points = filtered
+                });
+            }
+            catch (ArgumentException ex)
             {
-                City = normalizedCity,
-                Points = filtered
-            });
+                return NotFound("City not found.");
+            }
         }
     }
 }

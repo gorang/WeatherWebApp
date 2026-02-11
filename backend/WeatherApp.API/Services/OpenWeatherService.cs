@@ -18,8 +18,7 @@
         public async Task<CurrentWeatherResult> GetCurrentByLatLonAsync(double lat, double lon)
         {
             var url = $"{BaseUrl}/weather?lat={lat}&lon={lon}&appid={ApiKey}&units=metric";
-            var dto = await _http.GetFromJsonAsync<CurrentWeatherDto>(url)
-                      ?? throw new InvalidOperationException("OpenWeather returned empty response.");
+            var dto = await GetFromJsonSafeAsync<CurrentWeatherDto>(url, "Unable to retrieve current weather.");
 
             return MapCurrent(dto);
         }
@@ -27,10 +26,23 @@
         public async Task<ForecastResult> GetForecast5DaysByCityAsync(string city)
         {
             var url = $"{BaseUrl}/forecast?q={Uri.EscapeDataString(city)}&appid={ApiKey}&units=metric";
-            var dto = await _http.GetFromJsonAsync<ForecastDto>(url)
-                      ?? throw new InvalidOperationException("OpenWeather returned empty response.");
+            var dto = await GetFromJsonSafeAsync<ForecastDto>(url, "City not found.");
 
             return MapForecast(dto);
+        }
+
+        private async Task<T> GetFromJsonSafeAsync<T>(string url, string notFoundMessage)
+        {
+            try
+            {
+                var dto = await _http.GetFromJsonAsync<T>(url);
+                return dto ?? throw new ArgumentException(notFoundMessage);
+            }
+            catch (HttpRequestException ex)
+            {
+                // OpenWeather uses non-2xx (e.g., 404 "city not found") -> GetFromJsonAsync throws
+                throw new ArgumentException(notFoundMessage, ex);
+            }
         }
 
         private static CurrentWeatherResult MapCurrent(CurrentWeatherDto dto)
