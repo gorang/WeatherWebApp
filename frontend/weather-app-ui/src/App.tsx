@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { NavLink, Link, Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -22,9 +22,15 @@ export default function App() {
         {/* Navigation + auth controls */}
         <div style={menuRowStyle}>
           <nav style={navStyle}>
-            <Link to="/">Forecast</Link>
-            <Link to="/history">History</Link>
-            <Link to="/stats">Stats</Link>
+            <NavLink to="/" style={linkStyle}>
+              Forecast
+            </NavLink>
+            <NavLink to="/history" style={linkStyle}>
+              History
+            </NavLink>
+            <NavLink to="/stats" style={linkStyle}>
+              Stats
+            </NavLink>
           </nav>
 
           <div style={authStyle}>
@@ -112,3 +118,12 @@ const authStyle: React.CSSProperties = {
   gap: 12,
   alignItems: "center",
 };
+
+const linkStyle = ({ isActive }: { isActive: boolean }): React.CSSProperties => ({
+  textDecoration: "none",
+  padding: "4px 8px",
+  borderRadius: 6,
+  fontWeight: 500,
+  color: isActive ? "white" : "#333",
+  backgroundColor: isActive ? "#1976d2" : "transparent",
+});
