@@ -12,6 +12,24 @@ export function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
 }
 
+function isTokenExpired(token: string): boolean {
+  try {
+    const payloadPart = token.split(".")[1];
+    const payloadJson = JSON.parse(atob(payloadPart));
+    const exp = payloadJson?.exp; // seconds since epoch
+    if (!exp) return false;
+    return Date.now() >= exp * 1000;
+  } catch {
+    return true; // if token is malformed, treat as expired
+  }
+}
+
 export function isLoggedIn(): boolean {
-  return !!getToken();
+  const token = getToken();
+  if (!token) return false;
+  if (isTokenExpired(token)) {
+    clearToken();
+    return false;
+  }
+  return true;
 }
