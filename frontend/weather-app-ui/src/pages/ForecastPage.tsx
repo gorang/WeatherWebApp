@@ -16,10 +16,22 @@ export default function ForecastPage() {
   const [err, setErr] = useState<string | null>(null);
 
   async function search() {
+    const trimmedCity = city.trim();
+
+    if (!trimmedCity) {
+      setErr("Please enter a city name.");
+      setRawCity("");
+      setRawPoints([]);
+      return;
+    }
+
     setErr(null);
     setBusy(true);
+
     try {
-      const res = await api.get<ForecastResponse>("/weather/forecast", { params: { city } });
+      const res = await api.get<ForecastResponse>("/weather/forecast", {
+        params: { city: trimmedCity },
+      });
       setRawCity(res.data.city);
       setRawPoints(res.data.points);
     } catch (e: any) {
