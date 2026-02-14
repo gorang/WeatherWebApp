@@ -20,7 +20,7 @@ api.interceptors.response.use(
     if (status === 401 || status === 403) {
       clearToken();
 
-      // redirect to login (simple + reliable)
+      // Redirect to login
       if (window.location.pathname !== "/login") {
         window.location.href = "/login";
       }
