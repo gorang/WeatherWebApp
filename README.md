@@ -2,7 +2,8 @@
 
 A simple web application that displays the current weather and weather forecasts using the OpenWeather API.  
 
-Technologies used:  
+## Technologies Used  
+
 * Frontend: React (TypeScript) + libraries  
 * Backend: ASP.NET Core  
 * Database: PostgreSQL  
