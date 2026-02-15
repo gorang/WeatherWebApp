@@ -2,6 +2,24 @@
 
 A simple web application that displays the current weather and weather forecasts using the OpenWeather API.  
 
+## Functional Diagram  
+
+```mermaid  
+graph TD
+    A["Frontend"]
+    B["Backend"]
+    C["OpenWeather API"]
+    D[("Database")]
+
+    A -->|HTTPS + JWT Token| B
+    B -->|API key| C
+    B -->|Users + Searches| D
+
+    style A fill:#f0f8ff,stroke:#3176b2,stroke-width:2px
+    style B fill:#fff0e0,stroke:#b26231,stroke-width:2px
+    style D fill:#f0f0e0,stroke:#8b8b5f,stroke-width:2px
+    style C fill:#ffe0e0,stroke:#b23131,stroke-width:2px
+```  
 ## Technologies Used  
 
 * Frontend: React (TypeScript) + libraries  
