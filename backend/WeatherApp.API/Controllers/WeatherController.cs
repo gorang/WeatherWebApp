@@ -80,7 +80,7 @@ namespace WeatherApp.API.Controllers
                     Points = filtered
                 });
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 return NotFound("City not found.");
             }
